@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+
+  id_user       Int    @id @default(autoincrement())
+  passwd_user   String
+  user_user     String
+  email_user    String  @unique
+  role_user     Int?    @db.TinyInt  @default(0)
+  ativo_user    Boolean?   @default(false)
+  refreshToken  RefreshToken[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+
+model RefreshToken {
+  id          Int   @id  @default(autoincrement())
+  hashedToken String
+  user        user     @relation(fields: [userId], references: [id_user], onDelete: Cascade)
+  userId      Int
+  revoked     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model projetos {
+  id_projeto    Int    @id @default(autoincrement())
+  nome_projeto  String
+  private_projeto Int
+  plataforma plataforma[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+
+}
+
+model plataforma {
+  id    Int    @id @default(autoincrement())
+  nome_plataforma   String
+  alias_plataforma  String
+  active_plaforma   Int     @db.TinyInt
+  inf_plataforma    String    @default("")
+  host_projt     projetos  @relation(fields: [host_projt_id], references: [id_projeto], onDelete: Cascade, onUpdate: Cascade)
+  host_projt_id   Int
+  equipamentos equipamentos[]
+  node node[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+
+model equipamentos {
+  id_equip  Int    @id @default(autoincrement())
+  nome_equip  String
+  tipo_equip  String @default("")
+  local_equip  String @default("")
+  inf_equip   String @default("")
+  url_equip   String @default("")
+  equip_plat plataforma @relation(fields: [equip_plat_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  equip_plat_id Int
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+
+model node {
+  id_node Int    @id @default(autoincrement())
+  nome_node String
+  ssh_node  String
+  vnc_node  String
+  rdp_node  String
+  router_node String
+  host_plat plataforma @relation(fields: [host_plat_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  host_plat_id Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime? @updatedAt
+
+
+}
