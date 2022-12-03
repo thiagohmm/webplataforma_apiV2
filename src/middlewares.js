@@ -33,7 +33,7 @@ const isAuthenticated = (req, res, next) => {
     req.userId = decoded.user.id_user;
     req.passwd = decoded.user.passwd_user;
     req.email = decoded.user.email_user;
-    req.user = decoded.user.user_user;
+
     next();
   });
 };
