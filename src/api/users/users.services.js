@@ -6,6 +6,13 @@ function findUserByEmail(email) {
     where: {
       email_user: email,
     },
+    select: {
+      id_user: true,
+      passwd_user: true,
+      role_user: true,
+      ativo_user: true
+    },
+
   });
 }
 

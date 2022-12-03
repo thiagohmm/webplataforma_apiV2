@@ -14,18 +14,21 @@ const {
   updaterefreshTokenToWhitelist
 } = require('./auth.services');
 // const { hashToken } = require('../../utils/hashToken');
-const { isAuthenticated, isActive } = require('../../middlewares');
+const { isAuthenticated } = require('../../middlewares');
 
 const router = express.Router();
 
 router.post('/register', async (req, res, next) => {
   try {
-    const { email, passwd, usuario } = req.body;
-    if (!email || !passwd || !usuario) {
+    let role = '';
+
+    const { email, passwd } = req.body;
+    if (!email || !passwd) {
       res.status(400);
       throw new Error('You must provide an email and a password.');
     }
 
+    const emailAddress = email.toLowerCase();
     const existingUser = await findUserByEmail(email);
 
     if (existingUser) {
@@ -33,10 +36,17 @@ router.post('/register', async (req, res, next) => {
       throw new Error('Email já está sendo usado');
     }
 
+    if (emailAddress.indexOf('atech.com.br') > -1) {
+      // true if the address contains yahoo.com
+      role = 0;
+    } else {
+      role = 2;
+    }
     const dados = {
-      email_user: email,
+      email_user: emailAddress,
       passwd_user: passwd,
-      user_user: usuario
+      role_user: role
+
     };
 
     const user = await createUserByEmailAndPassword(dados);
@@ -55,8 +65,8 @@ router.post('/register', async (req, res, next) => {
 
 router.post('/login', async (req, res, next) => {
   try {
-    const { email, passwd, user } = req.body;
-    if (!email || !passwd || !user) {
+    const { email, passwd } = req.body;
+    if (!email || !passwd) {
       res.status(400);
       throw new Error('You must provide an email and a password.');
     }

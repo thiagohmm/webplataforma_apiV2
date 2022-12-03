@@ -14,7 +14,6 @@ model user {
 
   id_user       Int    @id @default(autoincrement())
   passwd_user   String
-  user_user     String
   email_user    String  @unique
   role_user     Int?    @db.TinyInt  @default(0)
   ativo_user    Boolean?   @default(false)
@@ -53,6 +52,7 @@ model plataforma {
   inf_plataforma    String    @default("")
   host_projt     projetos  @relation(fields: [host_projt_id], references: [id_projeto], onDelete: Cascade, onUpdate: Cascade)
   host_projt_id   Int
+  convidado_plataforma  Int     @db.TinyInt
   equipamentos equipamentos[]
   node node[]
   createdAt     DateTime       @default(now())
