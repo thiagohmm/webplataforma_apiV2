@@ -11,11 +11,11 @@ router.get('/', isAuthenticated, isActive, async (req, res, next) => {
   try {
     if (req.ativo) {
       if (req.role === 2) {
-        res.status(200).json(listAllProjetosConvidados());
+        res.status(200).json(await listAllProjetosConvidados());
       } else if (req.role === 0) {
-        res.status(200).json(listAllProjetosComum());
-      } else {
         console.log('caiuu aqui');
+        res.status(200).json(await listAllProjetosComum());
+      } else {
         res.status(200).json(await listAllProjetosAdmin());
       }
 
@@ -55,14 +55,13 @@ router.get('/:id', isAuthenticated, isActive, async (req, res, next) => {
 
 router.post('/create', isAuthenticated, isActive, async (req, res, next) => {
   try {
-    const { nome, privateProj } = req.body;
+    const { nome } = req.body;
     if (req.ativo) {
       if (req.role === 0 || req.role === 2) {
         res.status(401).json({ erro: '🚫 Un-Authorized 🚫' });
       } else {
         const projetos = {
           nome_projeto: nome,
-          private_projeto: parseInt(privateProj, 10)
 
         };
         const projeto = await createProjetos(projetos);
