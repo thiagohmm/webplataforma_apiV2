@@ -36,7 +36,7 @@ model RefreshToken {
 model projetos {
   id_projeto    Int    @id @default(autoincrement())
   nome_projeto  String
-  private_projeto Int
+  private_projeto Int    @default(0)
   plataforma plataforma[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
@@ -52,7 +52,7 @@ model plataforma {
   inf_plataforma    String    @default("")
   host_projt     projetos  @relation(fields: [host_projt_id], references: [id_projeto], onDelete: Cascade, onUpdate: Cascade)
   host_projt_id   Int
-  convidado_plataforma  Int     @db.TinyInt
+  private_plataforma  Int     @db.TinyInt
   equipamentos equipamentos[]
   node node[]
   createdAt     DateTime       @default(now())
