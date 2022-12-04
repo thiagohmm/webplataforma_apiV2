@@ -1,52 +1,52 @@
 const { db } = require('../../utils/db');
 
-function listAllProjetosConvidados() {
-  db.projetos.findMany({
+async function listAllProjetosConvidados() {
+  return db.projetos.findMany({
     where: {
       private_projeto: 2,
     },
     select: {
-      id_projetos: true,
+      id_projeto: true,
       nome_projeto: true,
 
     }
   });
 }
 
-function listAllProjetosComum() {
-  db.projetos.findMany({
+async function listAllProjetosComum() {
+  return db.projetos.findMany({
     where: {
       private_projeto: {
         gte: 1
       }
     },
     select: {
-      id_projetos: true,
+      id_projeto: true,
       nome_projeto: true,
 
     }
   });
 }
 
-function listAllProjetosAdmin() {
-  db.projetos.findMany({
+async function listAllProjetosAdmin() {
+  return db.projetos.findMany({
     select: {
-      id_projetos: true,
+      id_projeto: true,
       nome_projeto: true,
     }
   });
 }
 
-function listProjetosId(id_projetos) {
-  db.projetos.findUnique({
+async function listProjetosId(id_projeto) {
+  return db.projetos.findUnique({
     where: {
-      id_projetos,
+      id_projeto
     },
 
   });
 }
 
-function createProjetos(projetos) {
+async function createProjetos(projetos) {
   return db.projetos.create({
     data: projetos,
   });
