@@ -104,10 +104,10 @@ router.post('/login', async (req, res, next) => {
 
 // This endpoint is only for demo purpose.
 // Move this logic where you need to revoke the tokens( for ex, on password reset)
-router.get('/logout', isAuthenticated, async (req, res, next) => {
+router.post('/logout', isAuthenticated, async (req, res, next) => {
   try {
     // const { email } = req.body;
-    const { email } = req;
+    const { email } = req.body;
 
     if (!email) {
       res.status(400);
