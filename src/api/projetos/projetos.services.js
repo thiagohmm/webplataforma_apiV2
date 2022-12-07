@@ -52,26 +52,21 @@ async function createProjetos(projetos) {
   });
 }
 
-function deleteProjetos(id_projetos) {
-  return db.refreshToken.update({
-    where: {
-      id_projetos
-    },
-    data: {
-      revoked: true
-    }
-  });
-}
-
-function updateProjetos(id_projeto, nome, private_projeto) {
-  return db.projetos.update({
+async function deleteProjetos(id_projeto) {
+  return db.projetos.delete({
     where: {
       id_projeto
     },
-    data: {
-      nome_projeto: nome,
-      private_projeto
-    }
+  });
+}
+
+async function updateProjetos(projetos) {
+  return db.projetos.update({
+    where: {
+      id_projeto: projetos.id_projeto
+    },
+    data:
+      projetos
 
   });
 }

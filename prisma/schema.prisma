@@ -36,7 +36,7 @@ model RefreshToken {
 model projetos {
   id_projeto    Int    @id @default(autoincrement())
   nome_projeto  String
-  private_projeto Int    @default(0)
+  private_projeto Int?    @default(0)
   plataforma plataforma[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
