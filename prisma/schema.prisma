@@ -48,11 +48,11 @@ model plataforma {
   id    Int    @id @default(autoincrement())
   nome_plataforma   String
   alias_plataforma  String
-  active_plaforma   Int     @db.TinyInt
-  inf_plataforma    String    @default("")
+  active_plataforma   Int?     @db.TinyInt @default(1)
+  inf_plataforma    String?    @default("")
   host_projt     projetos  @relation(fields: [host_projt_id], references: [id_projeto], onDelete: Cascade, onUpdate: Cascade)
   host_projt_id   Int
-  private_plataforma  Int     @db.TinyInt
+  private_plataforma  Int?     @db.TinyInt  @default(0)
   equipamentos equipamentos[]
   node node[]
   createdAt     DateTime       @default(now())
