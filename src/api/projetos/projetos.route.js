@@ -2,7 +2,7 @@ const express = require('express');
 const { isAuthenticated, isActive } = require('../../middlewares');
 const {
   listAllProjetosAdmin, listAllProjetosComum,
-  listAllProjetosConvidados, listProjetosId, createProjetos, updateProjetos, deleteProjetos
+  listAllProjetosConvidados, listProjetosId, createProjetos, updateProjetos, deleteProjetos,
 } = require('./projetos.services');
 
 const router = express.Router();
@@ -53,15 +53,16 @@ router.get('/:id', isAuthenticated, isActive, async (req, res, next) => {
 
 router.post('/create', isAuthenticated, isActive, async (req, res, next) => {
   try {
-    const { nome } = req.body;
+    const { nome, privateProj } = req.body;
     if (req.ativo) {
       if (req.role === 0 || req.role === 2) {
         res.status(401).json({ erro: '🚫 Un-Authorized 🚫' });
       } else {
         const projetos = {
           nome_projeto: nome,
-
+          private_projeto: parseInt(privateProj, 10),
         };
+        console.log(projetos);
         const projeto = await createProjetos(projetos);
         res.status(200).json(projeto);
       }
@@ -84,7 +85,7 @@ router.put('/update/:id', isAuthenticated, isActive, async (req, res, next) => {
     const projetos = {
       id_projeto: parseInt(id, 10),
       nome_projeto: nome,
-      private_projeto: privateProj
+      private_projeto: privateProj,
     };
 
     if (req.ativo) {
