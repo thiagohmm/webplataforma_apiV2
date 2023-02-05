@@ -31,17 +31,15 @@ router.get('/', isAuthenticated, isActive, async (req, res, next) => {
 router.get('/:id', isAuthenticated, isActive, async (req, res, next) => {
   try {
     const { id } = req.params;
+    console.log(id);
 
     if (req.ativo) {
       if (req.role === 2) {
         res.status(401).json({ erro: '🚫 Un-Authorized 🚫' });
-      } else {
-        const projeto = await listProjetosId(parseInt(id, 10));
-
-        res.json(projeto);
       }
+      const projeto = await listProjetosId(parseInt(id, 10));
 
-      // res.json(user);
+      res.json(projeto);
     } else {
       res.status(401);
       throw new Error('🚫 Un-Authorized 🚫');
