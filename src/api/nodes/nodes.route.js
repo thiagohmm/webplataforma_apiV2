@@ -1,11 +1,13 @@
 const express = require('express');
 const { isAuthenticated, isActive } = require('../../middlewares');
 
-const { createNodes,
+const {
+  createNodes,
   listNodesId,
   deleteNodes,
   updateNodes,
-  listProjtAllNodesId } = require('./nodes.service')
+  listProjtAllNodesId,
+} = require('./nodes.service');
 
 const router = express.Router();
 
@@ -14,11 +16,7 @@ router.get('/:id', isAuthenticated, isActive, async (req, res, next) => {
     const { id } = req.params;
 
     if (req.ativo) {
-
       res.status(200).json(await listNodesId(parseInt(id, 10)));
-
-
-
     } else {
       res.status(401);
       throw new Error('🚫 Un-Authorized 🚫');
@@ -27,18 +25,13 @@ router.get('/:id', isAuthenticated, isActive, async (req, res, next) => {
     next(err);
   }
 });
-
 
 router.get('/plataforma/:host_plat_id', isAuthenticated, isActive, async (req, res, next) => {
   try {
     const { host_plat_id } = req.params;
 
     if (req.ativo) {
-
       res.status(200).json(await listProjtAllNodesId(parseInt(host_plat_id, 10)));
-
-
-
     } else {
       res.status(401);
       throw new Error('🚫 Un-Authorized 🚫');
@@ -48,11 +41,12 @@ router.get('/plataforma/:host_plat_id', isAuthenticated, isActive, async (req, r
   }
 });
 
-
 router.put('/update/:id', isAuthenticated, isActive, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { nome, ssh, vnc, router, rdp, host_plat_id } = req.body;
+    const {
+      nome, ssh, vnc, router_node, rdp, host_plat_id,
+    } = req.body;
 
     const nodes = {
       id_node: parseInt(id, 10),
@@ -60,8 +54,8 @@ router.put('/update/:id', isAuthenticated, isActive, async (req, res, next) => {
       ssh_node: ssh,
       vnc_node: vnc,
       rdp_node: rdp,
-      router_node: router,
-      host_plat_id
+      router_node,
+      host_plat_id,
     };
 
     if (req.ativo) {
@@ -71,26 +65,24 @@ router.put('/update/:id', isAuthenticated, isActive, async (req, res, next) => {
       const updateNode = await updateNodes(nodes);
       res.status(200).json(updateNode);
     }
-
   } catch (err) {
     next(err);
   }
 });
 
-
-
 router.post('/create', isAuthenticated, isActive, async (req, res, next) => {
   try {
-
-    const { nome, ssh, vnc, router, rdp, host_plat_id } = req.body;
+    const {
+      nome, ssh, vnc, router_node, rdp, host_plat_id,
+    } = req.body;
 
     const nodes = {
       nome_node: nome,
       ssh_node: ssh,
       vnc_node: vnc,
       rdp_node: rdp,
-      router_node: router,
-      host_plat_id
+      router_node,
+      host_plat_id,
     };
 
     if (req.ativo) {
@@ -100,12 +92,10 @@ router.post('/create', isAuthenticated, isActive, async (req, res, next) => {
       const createNode = await createNodes(nodes);
       res.status(200).json(createNode);
     }
-
   } catch (err) {
     next(err);
   }
 });
-
 
 router.delete('/delete/:id', isAuthenticated, isActive, async (req, res, next) => {
   try {
@@ -125,8 +115,5 @@ router.delete('/delete/:id', isAuthenticated, isActive, async (req, res, next) =
     next(err);
   }
 });
-
-
-
 
 module.exports = router;
