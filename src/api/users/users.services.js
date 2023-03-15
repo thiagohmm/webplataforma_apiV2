@@ -10,7 +10,7 @@ function findUserByEmail(email) {
       id_user: true,
       passwd_user: true,
       role_user: true,
-      ativo_user: true
+      ativo_user: true,
     },
 
   });
@@ -31,8 +31,22 @@ function findUserById(id) {
   });
 }
 
+async function deleteUser(id) {
+  return db.user.delete({
+    where: {
+      id_user: id,
+    },
+  });
+}
+
+async function listAllUsers() {
+  return db.user.findMany();
+}
+
 module.exports = {
   findUserByEmail,
   findUserById,
-  createUserByEmailAndPassword
+  createUserByEmailAndPassword,
+  deleteUser,
+  listAllUsers,
 };

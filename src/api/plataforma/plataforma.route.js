@@ -5,8 +5,8 @@ const {
   listPlataformaIdConvidado, buscaPlataformaAdmin, buscaPlataformaComum,
   buscaPlataformaConvidado,
   deletePlataforma, updatePlataforma, listAllPlataformaAdmin,
-  listAllPlataformaComum,
-  listAllPlataformaConvidados,
+  listAllPlataformaComum, listProjtAllPlataformaId,
+  listAllPlataformaConvidados, listProjtPlataformaId,
 } = require('./plataforma.services');
 
 const router = express.Router();
@@ -108,12 +108,12 @@ router.get('/api/busca', isAuthenticated, isActive, async (req, res, next) => {
   }
 });
 
-router.get('/projeto/:projt_id', isAuthenticated, isActive, async (req, res, next) => {
+router.get('/projeto/:id', isAuthenticated, isActive, async (req, res, next) => {
   try {
     const { id } = req.params;
 
     if (req.ativo) {
-      res.status(200).json(await listProjtPlataformaId(parseInt(projt_id, 10)));
+      res.status(200).json(await listProjtPlataformaId(parseInt(id, 10)));
 
       // res.json(user);
     } else {
@@ -125,12 +125,12 @@ router.get('/projeto/:projt_id', isAuthenticated, isActive, async (req, res, nex
   }
 });
 
-router.get('/projetoall/:projt_id', isAuthenticated, isActive, async (req, res, next) => {
+router.get('/projetoall/:id', isAuthenticated, isActive, async (req, res, next) => {
   try {
     const { id } = req.params;
 
     if (req.ativo) {
-      res.status(200).json(await listProjtAllPlataformaId(parseInt(projt_id, 10)));
+      res.status(200).json(await listProjtAllPlataformaId(parseInt(id, 10)));
 
       // res.json(user);
     } else {
@@ -165,17 +165,16 @@ router.put('/update/:id', isAuthenticated, isActive, async (req, res, next) => {
   try {
     const { id } = req.params;
     const {
-      nome_plataforma, alias, active_plataforma, inf_plataforma, host_projt_id, private_plataforma,
+      nome, alias, active_plataforma, inf_plataforma, host_projt_id, privatePlat,
     } = req.body;
-
     const plataforma = {
       id: parseInt(id, 10),
-      nome_plataforma,
-      private_plataforma,
-      host_projt_id,
-      inf_plataforma,
-      active_plataforma,
+      nome_plataforma: nome,
       alias_plataforma: alias,
+      active_plataforma,
+      inf_plataforma,
+      host_projt_id,
+      private_plataforma: privatePlat,
     };
 
     if (req.ativo) {

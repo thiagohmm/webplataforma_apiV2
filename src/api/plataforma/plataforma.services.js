@@ -81,7 +81,7 @@ async function buscaPlataformaConvidado(search) {
 }
 
 async function listProjtPlataformaId(host_projt_id) {
-  return db.plataforma.findUnique({
+  return db.plataforma.findMany({
     where: {
       host_projt_id,
       active_plataforma: 1,
@@ -90,7 +90,7 @@ async function listProjtPlataformaId(host_projt_id) {
 }
 
 async function listProjtAllPlataformaId(host_projt_id) {
-  return db.plataforma.findUnique({
+  return db.plataforma.findMany({
     where: {
       host_projt_id,
     },
@@ -106,6 +106,7 @@ async function deletePlataforma(id) {
 }
 
 async function updatePlataforma(plataforma) {
+  console.log('Dados recebidos na api', plataforma);
   return db.plataforma.update({
     where: {
       id: plataforma.id,
@@ -131,4 +132,5 @@ module.exports = {
   listAllPlataformaAdmin,
   listAllPlataformaComum,
   listAllPlataformaConvidados,
+
 };

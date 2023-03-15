@@ -1,12 +1,13 @@
 const express = require('express');
 const { isAuthenticated, isActive } = require('../../middlewares');
 
-const { createEquip,
+const {
+  createEquip,
   listEquipId,
   deleteEquip,
   updateEquip,
   listPlatEquipId,
-} = require('./equip.service')
+} = require('./equip.service');
 
 const router = express.Router();
 
@@ -20,9 +21,6 @@ router.get('/:id', isAuthenticated, isActive, async (req, res, next) => {
       }
 
       res.status(200).json(await listEquipId(parseInt(id, 10)));
-
-
-
     } else {
       res.status(401);
       throw new Error('🚫 Un-Authorized 🚫');
@@ -31,7 +29,6 @@ router.get('/:id', isAuthenticated, isActive, async (req, res, next) => {
     next(err);
   }
 });
-
 
 router.get('/plataforma/:equip_plat_id', isAuthenticated, isActive, async (req, res, next) => {
   try {
@@ -43,9 +40,6 @@ router.get('/plataforma/:equip_plat_id', isAuthenticated, isActive, async (req, 
       }
 
       res.status(200).json(await listPlatEquipId(parseInt(equip_plat_id, 10)));
-
-
-
     } else {
       res.status(401);
       throw new Error('🚫 Un-Authorized 🚫');
@@ -55,11 +49,12 @@ router.get('/plataforma/:equip_plat_id', isAuthenticated, isActive, async (req, 
   }
 });
 
-
 router.put('/update/:id', isAuthenticated, isActive, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { nome, tipo, local, inf, url, equip_plat_id } = req.body;
+    const {
+      nome, tipo, local, inf, url, equip_plat_id,
+    } = req.body;
 
     const equip = {
       id_equip: parseInt(id, 10),
@@ -68,9 +63,9 @@ router.put('/update/:id', isAuthenticated, isActive, async (req, res, next) => {
       local_equip: local,
       inf_equip: inf,
       url_equip: url,
-      equip_plat_id
+      equip_plat_id,
     };
-
+    
     if (req.ativo) {
       if (req.role === 0 || req.role === 2) {
         res.status(401).json({ erro: '🚫 Un-Authorized 🚫' });
@@ -78,18 +73,16 @@ router.put('/update/:id', isAuthenticated, isActive, async (req, res, next) => {
       const updatequip = await updateEquip(equip);
       res.status(200).json(updatequip);
     }
-
   } catch (err) {
     next(err);
   }
 });
 
-
-
 router.post('/create', isAuthenticated, isActive, async (req, res, next) => {
   try {
-
-    const { nome, tipo, local, inf, url, equip_plat_id } = req.body;
+    const {
+      nome, tipo, local, inf, url, equip_plat_id,
+    } = req.body;
 
     const nodes = {
 
@@ -98,8 +91,9 @@ router.post('/create', isAuthenticated, isActive, async (req, res, next) => {
       local_equip: local,
       inf_equip: inf,
       url_equip: url,
-      equip_plat_id
+      equip_plat_id: parseInt(equip_plat_id, 10),
     };
+
     if (req.ativo) {
       if (req.role === 0 || req.role === 2) {
         res.status(401).json({ erro: '🚫 Un-Authorized 🚫' });
@@ -107,12 +101,10 @@ router.post('/create', isAuthenticated, isActive, async (req, res, next) => {
       const createquip = await createEquip(nodes);
       res.status(200).json(createquip);
     }
-
   } catch (err) {
     next(err);
   }
 });
-
 
 router.delete('/delete/:id', isAuthenticated, isActive, async (req, res, next) => {
   try {
@@ -132,8 +124,5 @@ router.delete('/delete/:id', isAuthenticated, isActive, async (req, res, next) =
     next(err);
   }
 });
-
-
-
 
 module.exports = router;

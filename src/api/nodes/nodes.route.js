@@ -62,6 +62,7 @@ router.put('/update/:id', isAuthenticated, isActive, async (req, res, next) => {
       if (req.role === 0 || req.role === 2) {
         res.status(401).json({ erro: '🚫 Un-Authorized 🚫' });
       }
+
       const updateNode = await updateNodes(nodes);
       res.status(200).json(updateNode);
     }
