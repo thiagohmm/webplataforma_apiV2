@@ -1,6 +1,8 @@
 const express = require('express');
 const { isAuthenticated, isActive } = require('../../middlewares');
-const { findUserById, deleteUser, listAllUsers } = require('./users.services');
+const {
+  findUserById, deleteUser, listAllUsers, countNewUsers,
+} = require('./users.services');
 
 const router = express.Router();
 
@@ -49,6 +51,23 @@ router.get('/', isAuthenticated, isActive, async (req, res, next) => {
       }
 
       res.status(200).json(await listAllUsers());
+    } else {
+      res.status(401);
+      throw new Error('🚫 Un-Authorized 🚫');
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get('/countNewUser', isAuthenticated, isActive, async (req, res, next) => {
+  try {
+    if (req.ativo) {
+      if (req.role === 0 || req.role === 2) {
+        res.status(401).json({ erro: '🚫 Un-Authorized 🚫' });
+      }
+
+      res.status(200).json(await countNewUsers());
     } else {
       res.status(401);
       throw new Error('🚫 Un-Authorized 🚫');

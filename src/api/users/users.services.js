@@ -43,10 +43,21 @@ async function listAllUsers() {
   return db.user.findMany();
 }
 
+async function countNewUsers() {
+  return db.user.aggregate({
+
+    where: {
+      ativo_user: 0,
+    },
+    _count: true,
+  });
+}
+
 module.exports = {
   findUserByEmail,
   findUserById,
   createUserByEmailAndPassword,
   deleteUser,
   listAllUsers,
+  countNewUsers,
 };
