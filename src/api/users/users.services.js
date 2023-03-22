@@ -44,12 +44,54 @@ async function listAllUsers() {
 }
 
 async function countNewUsers() {
-  return db.user.aggregate({
-
+  return db.user.count({
     where: {
-      ativo_user: 0,
+      ativo_user: false,
     },
-    _count: true,
+
+  });
+}
+
+async function getNewUsers() {
+  return db.user.findMany({
+    where: {
+      ativo_user: false,
+    },
+
+  });
+}
+
+async function updateUser(user) {
+  return db.user.update({
+    where: {
+      id_user: user.id_user,
+    },
+    data:
+      user,
+
+  });
+}
+
+async function aproveUser(user) {
+  return db.user.update({
+    where: {
+      id_user: user.id_user,
+    },
+    data:
+      user,
+
+  });
+}
+
+async function changePasswd(user) {
+  user.passwd_user = bcrypt.hashSync(user.passwd_user, 12);
+  return db.user.update({
+    where: {
+      id_user: user.id_user,
+    },
+    data:
+      user,
+
   });
 }
 
@@ -60,4 +102,8 @@ module.exports = {
   deleteUser,
   listAllUsers,
   countNewUsers,
+  getNewUsers,
+  updateUser,
+  aproveUser,
+  changePasswd,
 };
