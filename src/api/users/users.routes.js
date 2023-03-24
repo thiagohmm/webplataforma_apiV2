@@ -133,7 +133,7 @@ router.put('/aproveUser/:id', isAuthenticated, isActive, async (req, res, next) 
     };
     if (req.ativo) {
       if (req.role === 0 || req.role === 2) {
-        res.status(401).json({ erro: '🚫 aiiiii 🚫' });
+        res.status(401).json({ erro: '🚫 Un-Authorized 🚫' });
       }
 
       const updateNode = await aproveUser(user);
