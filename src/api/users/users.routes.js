@@ -109,9 +109,6 @@ router.put('/update/:id', isAuthenticated, isActive, async (req, res, next) => {
       ativo_user: ativo,
     };
     if (req.ativo) {
-      if (req.role === 0 || req.role === 2) {
-        res.status(401).json({ erro: '🚫 Un-Authorized 🚫' });
-      }
       // changePasswd
       if (mudaPasswd) {
         const changepasswd = await changePasswd(user);
@@ -129,9 +126,6 @@ router.put('/update/:id', isAuthenticated, isActive, async (req, res, next) => {
 router.put('/aproveUser/:id', isAuthenticated, isActive, async (req, res, next) => {
   try {
     const { id } = req.params;
-    // const {
-    //   ativo,
-    // } = req.body;
 
     const user = {
       id_user: parseInt(id, 10),
@@ -139,7 +133,7 @@ router.put('/aproveUser/:id', isAuthenticated, isActive, async (req, res, next) 
     };
     if (req.ativo) {
       if (req.role === 0 || req.role === 2) {
-        res.status(401).json({ erro: '🚫 Un-Authorized 🚫' });
+        res.status(401).json({ erro: '🚫 aiiiii 🚫' });
       }
 
       const updateNode = await aproveUser(user);
