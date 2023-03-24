@@ -102,19 +102,26 @@ router.put('/update/:id', isAuthenticated, isActive, async (req, res, next) => {
       passwd, role, ativo, mudaPasswd,
     } = req.body;
 
-    const user = {
+    const userPasswd = {
       id_user: parseInt(id, 10),
       passwd_user: passwd,
       role_user: role,
       ativo_user: ativo,
     };
+
+    const userRole = {
+      id_user: parseInt(id, 10),
+      role_user: role,
+      ativo_user: ativo,
+    };
+
     if (req.ativo) {
       // changePasswd
       if (mudaPasswd) {
-        const changepasswd = await changePasswd(user);
+        const changepasswd = await changePasswd(userPasswd);
         res.status(200).json(changepasswd);
       } else {
-        const updateNode = await updateUser(user);
+        const updateNode = await updateUser(userRole);
         res.status(200).json(updateNode);
       }
     }
