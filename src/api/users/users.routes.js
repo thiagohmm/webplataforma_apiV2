@@ -99,20 +99,20 @@ router.put('/update/:id', isAuthenticated, isActive, async (req, res, next) => {
   try {
     const { id } = req.params;
     const {
-      passwd, role, ativo, mudaPasswd,
+      passwd_user, role_user, ativo_user, mudaPasswd,
     } = req.body;
 
     const userPasswd = {
       id_user: parseInt(id, 10),
-      passwd_user: passwd,
-      role_user: role,
-      ativo_user: ativo,
+      passwd_user,
+      role_user,
+      ativo_user,
     };
 
     const userRole = {
       id_user: parseInt(id, 10),
-      role_user: role,
-      ativo_user: ativo,
+      role_user,
+      ativo_user,
     };
 
     if (req.ativo) {
@@ -145,6 +145,21 @@ router.put('/aproveUser/:id', isAuthenticated, isActive, async (req, res, next) 
 
       const updateNode = await aproveUser(user);
       res.status(200).json(updateNode);
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get('/:id', isAuthenticated, isActive, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    if (req.ativo) {
+      res.status(200).json(await findUserById(parseInt(id, 10)));
+    } else {
+      res.status(401);
+      throw new Error('🚫 Un-Authorized 🚫');
     }
   } catch (err) {
     next(err);
